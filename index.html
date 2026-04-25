@@ -44,27 +44,82 @@
         <a href="#waitlist" class="btn btn-primary">Get notified at launch →</a>
         <a href="#how" class="btn btn-ghost">How it works</a>
       </div>
-      <p class="fineprint">First on Android · iPhone coming after</p>
+      <p class="fineprint">First on iOS · Android coming after</p>
     </div>
 
     <div class="hero-panel">
-      <!-- Faux scan result — the money shot -->
+      <!-- Faux scan result — mirrors the in-app ScanResultCard structure -->
       <article class="scan-panel" aria-label="Example scan result">
         <span class="scan-stamp">Scanned</span>
         <header class="scan-head">
           <span class="scan-brand">nouri · scan</span>
-          <span>00:04s</span>
+          <span>Confidence high</span>
         </header>
         <h2 class="scan-title">Cocoa Puffs Cereal</h2>
-        <p class="scan-sub">per 30g serving · analysed against your profile</p>
+        <p class="scan-sub">analysed against your profile</p>
         <hr class="scan-rule">
+
         <ul class="scan-list">
-          <li class="row row-alert"><span class="tag">Allergen</span><span>Contains milk &amp; wheat</span></li>
-          <li class="row row-alert"><span class="tag">Warning</span><span>Ultra-processed food</span></li>
-          <li class="row row-alert"><span class="tag">Macros</span><span>Heavy on sugar — 25g added</span></li>
-          <li class="row row-fail"><span class="tag">Diet</span><span>Doesn't fit <strong>Low Sugar</strong></span></li>
-          <li class="row row-pass"><span class="tag">Diet</span><span>Fits <strong>Vegetarian</strong></span></li>
+          <li class="row row-fail"><span class="tag">Verdict</span><span>Heavily processed with dyes</span></li>
+          <li class="row row-fail"><span class="tag">Dyes</span><span>Contains Dyes</span></li>
         </ul>
+
+        <!-- Notes — "everything in moderation" guidance -->
+        <div class="scan-note">
+          <span class="scan-note-label">Notes</span>
+          <p>Heavily processed with added dyes. Not off-limits, but best saved for an occasional indulgence rather than a regular part of your diet.</p>
+        </div>
+
+        <ul class="scan-list">
+          <li class="row row-alert"><span class="tag">Macros</span><span>Heavy on Sugar</span></li>
+        </ul>
+
+        <!-- Processing scale — 4-tier NOVA visualisation -->
+        <div class="scan-process">
+          <div class="scan-process-head">
+            <span class="scan-process-label">Processing</span>
+            <span class="scan-process-value">Ultra-processed</span>
+          </div>
+          <div class="scan-process-track">
+            <div class="scan-process-rail"></div>
+            <div class="scan-process-steps">
+              <span class="scan-dot"></span>
+              <span class="scan-dot"></span>
+              <span class="scan-dot"></span>
+              <span class="scan-dot scan-dot-active"><span class="scan-dot-inner"></span></span>
+            </div>
+          </div>
+          <div class="scan-process-labels">
+            <span>Whole</span>
+            <span>Minimal</span>
+            <span>Processed</span>
+            <span class="scan-process-active">▲<br>Ultra</span>
+          </div>
+        </div>
+
+        <!-- Ingredient insights — educational callouts -->
+        <p class="scan-section-label">§ Ingredient notes</p>
+        <div class="scan-insight scan-insight-positive">
+          <span class="scan-insight-heading">Whole grain corn</span>
+          <p>Provides fiber and whole-grain carbohydrates — a positive on an otherwise refined cereal.</p>
+        </div>
+        <div class="scan-insight scan-insight-caution">
+          <span class="scan-insight-heading">Added sugars</span>
+          <p>Sugar and corn syrup drive ~36% of the product by weight. Cane sugar and high-fructose corn syrup have similar metabolic impact despite different marketing — total quantity matters most.</p>
+        </div>
+        <div class="scan-insight scan-insight-caution">
+          <span class="scan-insight-heading">Artificial colors</span>
+          <p>Red 40, Yellow 5, and Blue 1 are synthetic dyes. Some research links them to behavioral effects in children. The EU requires warning labels on products containing them.</p>
+        </div>
+
+        <ul class="scan-list">
+          <li class="row row-alert"><span class="tag">Allergen</span><span>Wheat / Gluten <em>· in Whole grain wheat</em></span></li>
+          <li class="row row-alert"><span class="tag">Allergen</span><span>Soy <em>· in Soy lecithin</em></span></li>
+          <li class="row row-fail"><span class="tag">Allergen</span><span>Tree Nuts <em>· on your profile</em></span></li>
+          <li class="row row-fail"><span class="tag">Diet</span><span>Contains tree nuts — flagged as one of your allergens.</span></li>
+          <li class="row row-fail"><span class="tag">Diet</span><span>High added sugar conflicts with your low-sugar preference.</span></li>
+        </ul>
+
         <footer class="scan-foot">
           <span>Saved to pantry</span>
           <span class="ts">✓ synced</span>
@@ -139,8 +194,8 @@
   <!-- waitlist / CTA -->
   <section class="section waitlist" id="waitlist">
     <p class="eyebrow">§ 04 — launching soon</p>
-    <h2 class="h2">First on Android.<br>First in line gets in free.</h2>
-    <p class="lede">We're finishing the beta. Drop a line and we'll email you the moment Nouri lands on the Play Store.</p>
+    <h2 class="h2">First on iOS.<br>First in line gets in free.</h2>
+    <p class="lede">We're finishing the beta. Drop a line and we'll email you the moment Nouri lands on the App Store.</p>
 
     <div class="waitlist-form">
       <a href="mailto:brianchan97hk@gmail.com?subject=Nouri%20waitlist&body=Hi%20%E2%80%94%20please%20add%20me%20to%20the%20Nouri%20waitlist.%20I%27d%20like%20to%20be%20notified%20when%20the%20app%20launches." class="btn btn-primary btn-big">Email the waitlist →</a>
