@@ -205,14 +205,78 @@
   <!-- waitlist / CTA -->
   <section class="section waitlist" id="waitlist">
     <p class="eyebrow">§ 04 — launching soon</p>
-    <h2 class="h2">First on iOS.<br>First in line gets in free.</h2>
-    <p class="lede">We're finishing the beta. Drop a line and we'll email you the moment Nouri lands on the App Store.</p>
+    <h2 class="h2">Get early access tips.<br>Free, no spam.</h2>
+    <p class="lede">Drop your email and we'll send you a short guide on reading food labels like a pro — plus a heads-up the moment anything new ships in Nouri.</p>
 
     <div class="waitlist-form">
-      <a href="mailto:brianchan97hk@gmail.com?subject=Nouri%20waitlist&body=Hi%20%E2%80%94%20please%20add%20me%20to%20the%20Nouri%20waitlist.%20I%27d%20like%20to%20be%20notified%20when%20the%20app%20launches." class="btn btn-primary btn-big">Email the waitlist →</a>
-      <p class="fineprint">or send a note to <a href="mailto:brianchan97hk@gmail.com">brianchan97hk@gmail.com</a></p>
+      <form id="subscribe-form" class="email-capture" novalidate>
+        <input
+          type="email"
+          id="subscribe-email"
+          name="email"
+          placeholder="your@email.com"
+          autocomplete="email"
+          required
+          aria-label="Email address"
+          class="email-input"
+        />
+        <button type="submit" class="btn btn-primary btn-big" id="subscribe-btn">
+          Get early access tips →
+        </button>
+      </form>
+      <p id="subscribe-msg" class="subscribe-msg" aria-live="polite"></p>
+      <p class="fineprint">No spam. Unsubscribe any time.</p>
     </div>
   </section>
+
+  <script>
+    (function () {
+      var form = document.getElementById('subscribe-form');
+      var emailInput = document.getElementById('subscribe-email');
+      var btn = document.getElementById('subscribe-btn');
+      var msg = document.getElementById('subscribe-msg');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = emailInput.value.trim();
+        if (!email || !email.includes('@')) {
+          msg.textContent = 'Please enter a valid email address.';
+          msg.className = 'subscribe-msg subscribe-msg-error';
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        msg.textContent = '';
+        msg.className = 'subscribe-msg';
+
+        fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email }),
+        })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data.ok) {
+              msg.textContent = 'You\'re in. Check your inbox for a welcome note.';
+              msg.className = 'subscribe-msg subscribe-msg-success';
+              form.reset();
+            } else {
+              msg.textContent = data.error || 'Something went wrong. Please try again.';
+              msg.className = 'subscribe-msg subscribe-msg-error';
+            }
+          })
+          .catch(function () {
+            msg.textContent = 'Network error. Please try again.';
+            msg.className = 'subscribe-msg subscribe-msg-error';
+          })
+          .finally(function () {
+            btn.disabled = false;
+            btn.textContent = 'Get early access tips →';
+          });
+      });
+    })();
+  </script>
 
   <!-- footer -->
   <footer class="footer">

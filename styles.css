@@ -939,6 +939,64 @@ body {
   }
 }
 
+/* ─── email capture form ─────────────────────────────────── */
+
+.email-capture {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 440px;
+  margin: 0 auto 0.5rem;
+}
+
+@media (min-width: 520px) {
+  .email-capture {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .email-capture .email-input {
+    flex: 1;
+  }
+}
+
+.email-input {
+  padding: 0.85rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 150ms;
+}
+
+.email-input::placeholder {
+  color: var(--ink-muted);
+}
+
+.email-input:focus {
+  border-color: var(--primary);
+}
+
+.subscribe-msg {
+  min-height: 1.4em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-top: 0.5rem;
+  color: var(--ink-muted);
+}
+
+.subscribe-msg-success {
+  color: var(--primary);
+}
+
+.subscribe-msg-error {
+  color: var(--accent);
+}
+
 /* ─── selection ─────────────────────────────────────────── */
 
 ::selection {
