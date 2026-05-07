@@ -1,0 +1,65 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogType?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogType = 'website',
+  ogImage = 'https://nouri-scan.vercel.app/og-image.png',
+} = Astro.props;
+
+const faviconSvg =
+  "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232D6A4F'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-style='italic' fill='%23F5F1E8' text-anchor='middle'%3En%3C/text%3E%3C/svg%3E";
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="theme-color" content="#2D6A4F">
+  {canonical && <link rel="canonical" href={canonical}>}
+
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content={ogType}>
+  <meta property="og:url" content={canonical ?? 'https://nouri-scan.vercel.app'}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content={ogImage}>
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={ogImage}>
+
+  <link rel="icon" type="image/svg+xml" href={faviconSvg}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,30..100;1,9..144,300..700,30..100&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="/styles.css">
+
+  <!-- PostHog product analytics — web → app funnel tracking -->
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init Ee Ss us ks register register_once register_for_session unregister unregister_for_session ut Vs ge createPersonProfile Mn Ls fs identify rs alias Ks set_config Cs reset un Ds qs As get_distinct_id getGroups get_session_id get_session_replay_url Z Os Pn xs Js getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identifySurvey getNextSurveyStep onSessionId getPageViewId getSurveyById captureTraceFeedback captureTraceMetric Hn".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_uw6NDAKkgmHaD2ZjonV9RxKqwoZKEUNpZvtSiEeV5AeQ', {
+      api_host: 'https://us.i.posthog.com',
+      defaults: '2025-05-24',
+      person_profiles: 'identified_only',
+    });
+  </script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <slot />
+</body>
+</html>

@@ -1,0 +1,277 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Nouri — Every ingredient, explained for you"
+  description="Nouri scans any food nutrition label with your camera, flags your allergens, checks it against your diet, and remembers every product in your pantry."
+>
+  <!-- topbar -->
+  <nav class="topbar" aria-label="Primary">
+    <a href="/" class="wordmark">nouri<span class="dot">.</span></a>
+    <ul class="topnav">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#waitlist" class="topnav-cta">Waitlist</a></li>
+    </ul>
+  </nav>
+
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">§ 01 — an AI nutrition reader for real people</p>
+      <h1 class="headline">Every ingredient,<br><em>explained</em> for you.</h1>
+      <p class="lede">Point your camera at any food label. Nouri reads the ingredients, flags your allergens, and tells you whether it fits your diet — all in under five seconds.</p>
+      <div class="cta-row">
+        <a href="#waitlist" class="btn btn-primary">Get notified at launch →</a>
+        <a href="#how" class="btn btn-ghost">How it works</a>
+      </div>
+      <p class="fineprint">First on iOS · Android coming after</p>
+    </div>
+
+    <div class="hero-panel">
+      <!-- Faux scan result — mirrors the in-app ScanResultCard structure -->
+      <article class="scan-panel" aria-label="Example scan result">
+        <span class="scan-stamp">Scanned</span>
+        <header class="scan-head">
+          <span class="scan-brand">nouri · scan</span>
+          <span>Confidence high</span>
+        </header>
+        <h2 class="scan-title">Cocoa Puffs Cereal</h2>
+        <p class="scan-sub">analysed against your profile</p>
+        <hr class="scan-rule">
+
+        <ul class="scan-list">
+          <li class="row row-fail"><span class="tag">Verdict</span><span>Heavily processed with dyes</span></li>
+          <li class="row row-fail"><span class="tag">Dyes</span><span>Contains Dyes</span></li>
+        </ul>
+
+        <div class="scan-note">
+          <span class="scan-note-label">Notes</span>
+          <p>Heavily processed with added dyes. Not off-limits, but best saved for an occasional indulgence rather than a regular part of your diet.</p>
+        </div>
+
+        <ul class="scan-list">
+          <li class="row row-alert"><span class="tag">Macros</span><span>Heavy on Sugar</span></li>
+        </ul>
+
+        <div class="scan-process">
+          <div class="scan-process-head">
+            <span class="scan-process-label">Processing</span>
+            <span class="scan-process-value">Ultra-processed</span>
+          </div>
+          <div class="scan-process-track">
+            <div class="scan-process-rail"></div>
+            <div class="scan-process-steps">
+              <span class="scan-dot"></span>
+              <span class="scan-dot"></span>
+              <span class="scan-dot"></span>
+              <span class="scan-dot scan-dot-active"><span class="scan-dot-inner"></span></span>
+            </div>
+          </div>
+          <div class="scan-process-labels">
+            <span>Whole</span>
+            <span>Minimal</span>
+            <span>Processed</span>
+            <span class="scan-process-active">▲<br>Ultra</span>
+          </div>
+        </div>
+
+        <p class="scan-section-label">§ Ingredient notes</p>
+        <div class="scan-insight scan-insight-positive">
+          <span class="scan-insight-heading">Whole grain corn</span>
+          <p>Provides fiber and whole-grain carbohydrates — a positive on an otherwise refined cereal.</p>
+        </div>
+        <div class="scan-insight scan-insight-caution">
+          <span class="scan-insight-heading">Added sugars</span>
+          <p>Sugar and corn syrup drive ~36% of the product by weight. Cane sugar and high-fructose corn syrup have similar metabolic impact despite different marketing — total quantity matters most.</p>
+        </div>
+        <div class="scan-insight scan-insight-caution">
+          <span class="scan-insight-heading">Artificial colors</span>
+          <p>Red 40, Yellow 5, and Blue 1 are synthetic dyes. Some research links them to behavioral effects in children. The EU requires warning labels on products containing them.</p>
+        </div>
+
+        <ul class="scan-list">
+          <li class="row row-alert"><span class="tag">Allergen</span><span>Wheat / Gluten <em>· in Whole grain wheat</em></span></li>
+          <li class="row row-alert"><span class="tag">Allergen</span><span>Soy <em>· in Soy lecithin</em></span></li>
+          <li class="row row-fail"><span class="tag">Allergen</span><span>Tree Nuts <em>· on your profile</em></span></li>
+          <li class="row row-fail"><span class="tag">Diet</span><span>Contains tree nuts — flagged as one of your allergens.</span></li>
+          <li class="row row-fail"><span class="tag">Diet</span><span>High added sugar conflicts with your low-sugar preference.</span></li>
+        </ul>
+
+        <footer class="scan-foot">
+          <span>Saved to pantry</span>
+          <span class="ts">✓ synced</span>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <!-- features -->
+  <section class="section" id="features">
+    <header class="section-head">
+      <h2 class="h2">Three things Nouri does, really well.</h2>
+      <p class="aside">Built for anyone who reads the back of the box — the curious, the allergic, the picky, the parents.</p>
+    </header>
+    <p class="eyebrow">§ 02 — what it does</p>
+
+    <div class="feature-grid">
+      <article class="feature">
+        <span class="feature-num">01 · Scan</span>
+        <h3 class="feature-title">Read any nutrition label, <em>instantly.</em></h3>
+        <p>Point your phone at the back of any package. Nouri's AI decodes the ingredient list, macronutrients, and the fine print you'd normally skip — and tells you what actually matters.</p>
+      </article>
+      <article class="feature">
+        <span class="feature-num">02 · Personal</span>
+        <h3 class="feature-title">Filtered through <em>your</em> profile.</h3>
+        <p>Tell Nouri about your allergies and food preferences once. Every scan is scored against your profile — vegan, halal, gluten-free, tree nuts, low sugar, whatever matters to you.</p>
+      </article>
+      <article class="feature">
+        <span class="feature-num">03 · Pantry</span>
+        <h3 class="feature-title">A pantry that <em>remembers.</em></h3>
+        <p>Every product you scan stays on file. Set expiry dates, track what's still good, never forget the jar at the back of the cupboard again.<span class="pill">Plus</span></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- how it works -->
+  <section class="section" id="how">
+    <header class="section-head">
+      <h2 class="h2">From scan to answer in&nbsp;five&nbsp;seconds.</h2>
+      <p class="aside">No accounts to manage, no calorie counting, no guilt. Just clarity.</p>
+    </header>
+    <p class="eyebrow">§ 03 — how it works</p>
+
+    <ol class="steps">
+      <li>
+        <span class="stepnum">i.</span>
+        <div>
+          <h4>Set your profile, once.</h4>
+          <p>Tap the allergens and diets that apply to you. It takes about a minute. You can edit it anytime.</p>
+        </div>
+        <span class="step-tag">~60s</span>
+      </li>
+      <li>
+        <span class="stepnum">ii.</span>
+        <div>
+          <h4>Scan the back of the package.</h4>
+          <p>Point your camera at the nutrition panel. The AI reads the ingredients and macros — you don't need a barcode.</p>
+        </div>
+        <span class="step-tag">~4s</span>
+      </li>
+      <li>
+        <span class="stepnum">iii.</span>
+        <div>
+          <h4>Read the real story.</h4>
+          <p>Nouri summarizes the label in plain English, flags anything you're allergic to, and tells you whether it fits the way you eat.</p>
+        </div>
+        <span class="step-tag">done</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- waitlist / CTA -->
+  <section class="section waitlist" id="waitlist">
+    <p class="eyebrow">§ 04 — launching soon</p>
+    <h2 class="h2">Get early access tips.<br>Free, no spam.</h2>
+    <p class="lede">Drop your email and we'll send you a short guide on reading food labels like a pro — plus a heads-up the moment anything new ships in Nouri.</p>
+
+    <div class="waitlist-form">
+      <form id="subscribe-form" class="email-capture" novalidate>
+        <input
+          type="email"
+          id="subscribe-email"
+          name="email"
+          placeholder="your@email.com"
+          autocomplete="email"
+          required
+          aria-label="Email address"
+          class="email-input"
+        />
+        <button type="submit" class="btn btn-primary btn-big" id="subscribe-btn">
+          Get early access tips →
+        </button>
+      </form>
+      <p id="subscribe-msg" class="subscribe-msg" aria-live="polite"></p>
+      <p class="fineprint">No spam. Unsubscribe any time.</p>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var form = document.getElementById('subscribe-form');
+      var emailInput = document.getElementById('subscribe-email');
+      var btn = document.getElementById('subscribe-btn');
+      var msg = document.getElementById('subscribe-msg');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = emailInput.value.trim();
+        if (!email || !email.includes('@')) {
+          msg.textContent = 'Please enter a valid email address.';
+          msg.className = 'subscribe-msg subscribe-msg-error';
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        msg.textContent = '';
+        msg.className = 'subscribe-msg';
+
+        fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email }),
+        })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data.ok) {
+              msg.textContent = 'You\'re in. Check your inbox for a welcome note.';
+              msg.className = 'subscribe-msg subscribe-msg-success';
+              form.reset();
+            } else {
+              msg.textContent = data.error || 'Something went wrong. Please try again.';
+              msg.className = 'subscribe-msg subscribe-msg-error';
+            }
+          })
+          .catch(function () {
+            msg.textContent = 'Network error. Please try again.';
+            msg.className = 'subscribe-msg subscribe-msg-error';
+          })
+          .finally(function () {
+            btn.disabled = false;
+            btn.textContent = 'Get early access tips →';
+          });
+      });
+    })();
+  </script>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="footcol">
+      <a href="/" class="wordmark small">nouri<span class="dot">.</span></a>
+      <p>An AI nutrition reader for real people. Built by one human, scanning one label at a time.</p>
+    </div>
+    <div class="footcol">
+      <h5>Product</h5>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#waitlist">Waitlist</a></li>
+      </ul>
+    </div>
+    <div class="footcol">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/support">Support</a></li>
+        <li><a href="/delete-account">Delete account</a></li>
+      </ul>
+    </div>
+    <div class="footbar">
+      <span>© 2026 Nouri</span>
+      <span>v0.1 · pre-launch</span>
+    </div>
+  </footer>
+</Base>

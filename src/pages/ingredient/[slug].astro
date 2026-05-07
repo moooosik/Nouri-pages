@@ -1,0 +1,137 @@
+---
+import Base from '../../layouts/Base.astro';
+import ingredients from '../../data/ingredients.json';
+
+export function getStaticPaths() {
+  return ingredients.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const canonical = `https://nouri-scan.vercel.app/ingredient/${entry.slug}`;
+---
+
+<Base
+  title={entry.metaTitle}
+  description={entry.metaDescription}
+  canonical={canonical}
+  ogType="article"
+>
+  <nav class="topbar" aria-label="Primary">
+    <a href="/" class="wordmark">nouri<span class="dot">.</span></a>
+    <ul class="topnav">
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/#how">How it works</a></li>
+      <li><a href="/#waitlist" class="topnav-cta">Get the app</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+    <a href="/" class="page-back">← Back to Nouri</a>
+    <h1>{entry.h1}</h1>
+
+    <section class="body-section">
+      <h2>What is it?</h2>
+      <p>[DRAFT — Marketer to fill]</p>
+    </section>
+
+    <section class="body-section">
+      <h2>Why it matters on food labels</h2>
+      <p>[DRAFT — Marketer to fill]</p>
+    </section>
+
+    <section class="body-section">
+      <h2>Foods most likely to contain it</h2>
+      <ul>
+        <li>[DRAFT — Marketer to fill]</li>
+      </ul>
+    </section>
+
+    <section class="body-section">
+      <h2>How Nouri helps</h2>
+      <p>[DRAFT — Marketer to fill]</p>
+    </section>
+
+    <div class="cta-block" id="cta-top">
+      <p class="cta-headline">Scan any label. Know in seconds.</p>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6763656630">
+        Download Nouri — Free on iOS
+      </a>
+    </div>
+
+    <section class="cross-links">
+      <h2>Related</h2>
+      <p>[DRAFT — cross-links placeholder]</p>
+    </section>
+
+    <div class="cta-block" id="cta-bottom">
+      <p class="cta-headline">Scan any label. Know in seconds.</p>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6763656630">
+        Download Nouri — Free on iOS
+      </a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footcol">
+      <a href="/" class="wordmark small">nouri<span class="dot">.</span></a>
+      <p>An AI nutrition reader for real people.</p>
+    </div>
+    <div class="footcol">
+      <h5>Product</h5>
+      <ul>
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#waitlist">Waitlist</a></li>
+      </ul>
+    </div>
+    <div class="footcol">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/support">Support</a></li>
+        <li><a href="/delete-account">Delete account</a></li>
+      </ul>
+    </div>
+    <div class="footbar">
+      <span>© 2026 Nouri</span>
+      <span>v1.0</span>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .body-section {
+    margin: 2rem 0;
+  }
+  .body-section h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin: 0 0 0.6rem;
+    letter-spacing: -0.015em;
+  }
+  .cta-block {
+    background: #2D6A4F;
+    color: #F5F1E8;
+    padding: 2rem 1.5rem;
+    margin: 2.5rem 0;
+    text-align: center;
+    border-radius: 4px;
+  }
+  .cta-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin: 0 0 1rem;
+    color: #F5F1E8;
+  }
+  .cross-links {
+    margin: 2rem 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid #DEE2E6;
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Delete your account — Nouri"
+  description="How to delete your Nouri account and associated data."
+  canonical="https://nouri-scan.vercel.app/delete-account"
+>
+  <nav class="topbar" aria-label="Primary">
+    <a href="/" class="wordmark">nouri<span class="dot">.</span></a>
+    <ul class="topnav">
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/#how">How it works</a></li>
+      <li><a href="/#waitlist" class="topnav-cta">Waitlist</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+    <a href="/" class="page-back">← Back to Nouri</a>
+    <h1>Delete your account</h1>
+    <p class="meta">Last updated · 22 April 2026</p>
+
+    <p>You can delete your Nouri account and the data associated with it at any time. This page explains exactly what gets removed, how long it takes, and the two ways to do it.</p>
+
+    <div class="callout">
+      <strong>Cancel any subscription first</strong>
+      If you are a Nouri Plus subscriber, cancel the subscription through your Google Play or Apple account before deleting — those billing relationships live with the store, not with us.
+    </div>
+
+    <h2><span class="num">§ 01</span>The fastest way — in-app</h2>
+    <ol>
+      <li>Open Nouri and go to the <strong>Profile</strong> tab.</li>
+      <li>Scroll to the bottom of the screen to find <strong>§ Danger zone</strong>.</li>
+      <li>Tap <strong>Delete account</strong>, confirm twice, and your account is removed immediately.</li>
+    </ol>
+    <p>Your session ends, local data on your device is wiped, and the server-side deletion completes in a single request.</p>
+
+    <h2><span class="num">§ 02</span>By email</h2>
+    <p>If you can't sign in — for example, you've lost access to the Google or Apple account you registered with — email <a href="mailto:brianchan97hk@gmail.com?subject=Delete%20my%20Nouri%20account">brianchan97hk@gmail.com</a> with the subject line "Delete my account." Send the email from the address linked to your Nouri sign-in so we can verify ownership.</p>
+    <p>We confirm deletion within 30 days of receiving a verified request.</p>
+
+    <h2><span class="num">§ 03</span>What gets deleted</h2>
+    <ul>
+      <li><strong>Account record</strong> — your Nouri identity, linked email, and sign-in credentials.</li>
+      <li><strong>Profile data</strong> — allergens and dietary preferences you selected.</li>
+      <li><strong>Pantry and scan history</strong> — every product you scanned, any expiry dates, any notes.</li>
+      <li><strong>Subscription state</strong> — our record of your entitlement tier. The subscription itself is billed through the store and must be cancelled there separately.</li>
+      <li><strong>Local device data</strong> — SQLite databases and secure-storage entries on the phone where you tapped delete.</li>
+    </ul>
+
+    <h2><span class="num">§ 04</span>What is retained, and for how long</h2>
+    <ul>
+      <li><strong>Label photos</strong> — never retained by us. Scans are sent to Google's Gemini API for a one-shot analysis and are not stored on our servers at any point.</li>
+      <li><strong>Backups</strong> — your data may persist in encrypted database backups for up to <strong>90 days</strong> after account deletion, after which it is purged. During that window it cannot be accessed through the app or normal tooling.</li>
+      <li><strong>Billing records</strong> — if you were a subscriber, we may retain the minimum transaction metadata (order IDs, dates) required for accounting and to honour refund rights. This metadata does not include payment card details, which we never receive.</li>
+      <li><strong>Anonymised diagnostics</strong> — aggregated, non-identifying crash and performance data may be retained to improve the app. These records cannot be linked back to you after account deletion.</li>
+    </ul>
+
+    <h2><span class="num">§ 05</span>Questions</h2>
+    <p>Email <a href="mailto:brianchan97hk@gmail.com">brianchan97hk@gmail.com</a>. See also our <a href="/privacy">privacy policy</a> and <a href="/terms">terms</a>.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="footcol">
+      <a href="/" class="wordmark small">nouri<span class="dot">.</span></a>
+      <p>An AI nutrition reader for real people.</p>
+    </div>
+    <div class="footcol">
+      <h5>Product</h5>
+      <ul>
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#waitlist">Waitlist</a></li>
+      </ul>
+    </div>
+    <div class="footcol">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/support">Support</a></li>
+        <li><a href="/delete-account">Delete account</a></li>
+      </ul>
+    </div>
+    <div class="footbar">
+      <span>© 2026 Nouri</span>
+      <span>v0.1 · pre-launch</span>
+    </div>
+  </footer>
+</Base>

@@ -1,6 +1,8 @@
 # Nouri — landing site
 
-Static landing page for [Nouri](../Nouri), hosted on GitHub Pages.
+Static landing page for [Nouri](../Nouri), hosted on Vercel at `https://nouri-scan.vercel.app/`.
+
+(Also live on GitHub Pages at `https://moooosik.github.io/Nouri-pages/` as a fallback — both auto-deploy from `main`.)
 
 Plain HTML + CSS, no build step. Fonts from Google Fonts. All pages share `styles.css`.
 
@@ -20,26 +22,22 @@ python -m http.server 8000
 # then visit http://localhost:8000
 ```
 
-## Deploy to GitHub Pages
+## Deploy
 
-1. Create a new public repo on GitHub called `nouri-landing` (or whatever you want the URL path to be).
-2. From this directory:
+The repo (`moooosik/Nouri-pages` on GitHub) is wired to **both** Vercel and GitHub Pages. Just commit and push to `main` — both auto-deploy in under a minute.
 
-   ```sh
-   git init
-   git add .
-   git commit -m "Initial landing site"
-   git branch -M main
-   git remote add origin https://github.com/moooosik/Nouri-pages.git
-   git push -u origin main
-   ```
+```sh
+git add .
+git commit -m "your message"
+git push
+```
 
-3. In the repo's Settings → Pages, set the source to `main` branch, `/ (root)` folder.
-4. After a minute or two the site will be live at `https://moooosik.github.io/Nouri-pages/`.
+- **Primary URL (used in App Store listing):** `https://nouri-scan.vercel.app/`
+- **Fallback URL (GitHub Pages):** `https://moooosik.github.io/Nouri-pages/`
 
 ### Custom domain (later)
 
-If you buy `nouri.app` or similar, add it in Settings → Pages → Custom domain. Create a `CNAME` file at the repo root with just the domain name in it, and update the DNS records as GitHub instructs.
+If you buy `nouri.app` or similar, add it in Vercel → Settings → Domains. Vercel auto-provisions SSL and updates DNS instructions for you. The old `nouri-scan.vercel.app` URL keeps working as a permanent fallback.
 
 ## Things to customise before publishing
 
@@ -52,6 +50,6 @@ If you buy `nouri.app` or similar, add it in Settings → Pages → Custom domai
 
 When submitting the app to Google Play you'll be asked for:
 
-- **Privacy policy URL** → `https://moooosik.github.io/Nouri-pages/privacy.html`
+- **Privacy policy URL** → `https://nouri-scan.vercel.app/privacy.html`
 - **Support email** → the one in `support.html`
-- **Homepage URL** (optional for store, required for Google OAuth consent screen) → `https://moooosik.github.io/Nouri-pages/`
+- **Homepage URL** (optional for store, required for Google OAuth consent screen) → `https://nouri-scan.vercel.app/`
