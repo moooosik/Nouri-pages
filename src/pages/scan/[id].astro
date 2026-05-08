@@ -1,0 +1,422 @@
+---
+// Public scan result share page — /scan/[id]
+// SSR (server-rendered): opt out of static prerendering so each request
+// hits Supabase and returns live data.
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+
+// Read Supabase env vars injected at runtime via Vercel environment variables.
+// These must be set in the Vercel project dashboard as:
+//   SUPABASE_URL      — e.g. https://jhjwyjzpflzibpeonqvm.supabase.co
+//   SUPABASE_ANON_KEY — the public anon key (safe for read-only public queries)
+const SUPABASE_URL = import.meta.env.SUPABASE_URL ?? '';
+const SUPABASE_ANON_KEY = import.meta.env.SUPABASE_ANON_KEY ?? '';
+
+const { id } = Astro.params;
+
+// --- Supabase fetch ---
+// Queries the scan_result_cache table using the public anon key (read-only).
+// RLS on this table is service-role only; if the anon key can't read it, the
+// fetch will return an empty array and the page falls through to the "not found"
+// state. A pending.md entry has been queued to create a public_scans view that
+// grants anon read access to selected fields.
+type ScanRow = {
+  image_hash: string;
+  result_json: string;
+  created_at: string;
+};
+
+type FlaggedIngredient = {
+  ingredient?: string;
+  heading?: string;
+  flag?: string;
+  note?: string;
+};
+
+type AllergenEntry = {
+  allergen?: string;
+  ingredient?: string;
+};
+
+type ScanResult = {
+  productName?: string;
+  processingLevel?: string;
+  isUltraProcessed?: boolean;
+  ingredientInsights?: FlaggedIngredient[];
+  allergens?: AllergenEntry[];
+  verdictHeadline?: string;
+  confidence?: string;
+};
+
+let scanResult: ScanResult | null = null;
+let fetchError: string | null = null;
+
+if (!id) {
+  fetchError = 'Missing scan ID.';
+} else if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  fetchError = 'Server misconfigured: missing Supabase env vars.';
+} else {
+  try {
+    // Query scan_result_cache by image_hash (the scan ID used in the share URL).
+    const url = `${SUPABASE_URL}/rest/v1/scan_result_cache?image_hash=eq.${encodeURIComponent(id)}&select=result_json&limit=1`;
+    const res = await fetch(url, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        Accept: 'application/json',
+      },
+    });
+
+    if (!res.ok) {
+      fetchError = `Supabase returned ${res.status}.`;
+    } else {
+      const rows: ScanRow[] = await res.json();
+      if (rows.length > 0 && rows[0].result_json) {
+        scanResult = JSON.parse(rows[0].result_json) as ScanResult;
+      }
+      // rows.length === 0 means not found — scanResult stays null, page shows fallback
+    }
+  } catch (err) {
+    fetchError = err instanceof Error ? err.message : 'Unknown fetch error.';
+  }
+}
+
+// --- Derived display values ---
+const productName = scanResult?.productName ?? 'Unknown Product';
+const processingLevel = scanResult?.processingLevel ?? '';
+const verdictHeadline = scanResult?.verdictHeadline ?? '';
+const confidence = scanResult?.confidence ?? '';
+
+// Flagged ingredients: show caution-first, max 5
+const flaggedIngredients: FlaggedIngredient[] = (scanResult?.ingredientInsights ?? [])
+  .filter((i) => i.flag === 'caution' || i.flag === 'negative')
+  .slice(0, 5);
+
+// Allergens
+const allergens: AllergenEntry[] = (scanResult?.allergens ?? []).slice(0, 8);
+
+// Processing level badge color
+const BADGE_COLORS: Record<string, string> = {
+  whole: '#2D6A4F',
+  minimal: '#52B788',
+  processed: '#F4A261',
+  'ultra-processed': '#D62828',
+  ultra_processed: '#D62828',
+};
+const badgeColor = BADGE_COLORS[processingLevel] ?? '#888';
+const badgeLabel =
+  processingLevel === 'ultra-processed' || processingLevel === 'ultra_processed'
+    ? 'Ultra-Processed'
+    : processingLevel
+      ? processingLevel.charAt(0).toUpperCase() + processingLevel.slice(1)
+      : 'Unknown';
+
+// OG meta
+const ogTitle = scanResult
+  ? `${productName} — flagged on Nouri`
+  : 'Scan result — Nouri';
+const ogDescription = verdictHeadline || `See what Nouri found in ${productName}. Free ingredient scanner for iOS.`;
+const canonical = `https://nouri-scan.vercel.app/scan/${id}`;
+---
+
+<Base
+  title={ogTitle}
+  description={ogDescription}
+  canonical={canonical}
+  ogType="article"
+  ogImage={`/scan/${id}/og.png`}
+>
+  <nav class="topbar" aria-label="Primary">
+    <a href="/" class="wordmark">nouri<span class="dot">.</span></a>
+    <ul class="topnav">
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/#how">How it works</a></li>
+      <li><a href="https://apps.apple.com/app/id6763656630" class="topnav-cta">Get the app</a></li>
+    </ul>
+  </nav>
+
+  <main class="page scan-share-page">
+
+    {fetchError && (
+      <div class="not-found">
+        <p class="not-found-icon">🔍</p>
+        <h1>Scan not found</h1>
+        <p>This scan result may have expired or the link may be incorrect.</p>
+        <a href="/" class="btn btn-primary">Go to Nouri</a>
+      </div>
+    )}
+
+    {!fetchError && !scanResult && (
+      <div class="not-found">
+        <p class="not-found-icon">🔍</p>
+        <h1>Scan not found</h1>
+        <p>This scan result could not be found. The link may be incorrect or the scan may have expired.</p>
+        <a href="/" class="btn btn-primary">Go to Nouri</a>
+      </div>
+    )}
+
+    {!fetchError && scanResult && (
+      <article class="scan-card">
+        <header class="scan-card-header">
+          <span class="scan-brand-label">nouri · scan result</span>
+          {confidence && <span class="scan-confidence">Confidence: {confidence}</span>}
+        </header>
+
+        <h1 class="scan-product-name">{productName}</h1>
+
+        <div class="processing-badge" style={`background: ${badgeColor}`}>
+          {badgeLabel}
+        </div>
+
+        {verdictHeadline && (
+          <p class="scan-verdict">{verdictHeadline}</p>
+        )}
+
+        {flaggedIngredients.length > 0 && (
+          <section class="scan-section">
+            <h2 class="scan-section-title">Flagged ingredients</h2>
+            <ul class="ingredient-list">
+              {flaggedIngredients.map((item) => (
+                <li class="ingredient-item">
+                  <span class="ingredient-name">{item.heading ?? item.ingredient ?? ''}</span>
+                  {item.note && <span class="ingredient-note">{item.note}</span>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {allergens.length > 0 && (
+          <section class="scan-section">
+            <h2 class="scan-section-title">Allergens</h2>
+            <ul class="allergen-pills">
+              {allergens.map((a) => (
+                <li class="allergen-pill">{a.allergen ?? a.ingredient ?? ''}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <div class="scan-cta-block">
+          <p class="scan-cta-headline">Scan it yourself — Nouri is free on iOS</p>
+          <a
+            class="btn btn-primary scan-cta-btn"
+            href="https://apps.apple.com/app/id6763656630"
+          >
+            Download Nouri — Free on iOS
+          </a>
+          <p class="scan-cta-sub">Scans ingredients, flags allergens, checks your diet.</p>
+        </div>
+      </article>
+    )}
+
+  </main>
+
+  <footer class="footer">
+    <div class="footcol">
+      <a href="/" class="wordmark small">nouri<span class="dot">.</span></a>
+      <p>An AI nutrition reader for real people.</p>
+    </div>
+    <div class="footcol">
+      <h5>Product</h5>
+      <ul>
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#waitlist">Waitlist</a></li>
+      </ul>
+    </div>
+    <div class="footcol">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/support">Support</a></li>
+        <li><a href="/delete-account">Delete account</a></li>
+      </ul>
+    </div>
+    <div class="footbar">
+      <span>© 2026 Nouri</span>
+      <span>v1.0</span>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .scan-share-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  /* Not-found state */
+  .not-found {
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+  .not-found-icon {
+    font-size: 3rem;
+    margin: 0 0 1rem;
+  }
+  .not-found h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin: 0 0 0.75rem;
+    color: #1A1A1A;
+  }
+  .not-found p {
+    color: #555;
+    margin: 0 0 1.5rem;
+  }
+
+  /* Scan card */
+  .scan-card {
+    background: #FFFFFF;
+    border: 1px solid #DEE2E6;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .scan-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .scan-brand-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: #2D6A4F;
+    font-weight: 500;
+  }
+
+  .scan-product-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.7rem;
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+    color: #1A1A1A;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .processing-badge {
+    display: inline-block;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    margin-bottom: 0.75rem;
+  }
+
+  .scan-verdict {
+    color: #333;
+    font-size: 0.95rem;
+    margin: 0 0 1.25rem;
+    line-height: 1.5;
+  }
+
+  .scan-section {
+    margin: 1.25rem 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid #EAEAEA;
+  }
+
+  .scan-section-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin: 0 0 0.6rem;
+  }
+
+  /* Flagged ingredients */
+  .ingredient-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .ingredient-item {
+    background: #FFF5F5;
+    border-left: 3px solid #D62828;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .ingredient-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1A1A1A;
+    display: block;
+  }
+
+  .ingredient-note {
+    font-size: 0.8rem;
+    color: #555;
+    display: block;
+    margin-top: 0.1rem;
+  }
+
+  /* Allergen pills */
+  .allergen-pills {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .allergen-pill {
+    background: #FFF3E0;
+    border: 1px solid #F4A261;
+    color: #C05A00;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+  }
+
+  /* CTA block */
+  .scan-cta-block {
+    background: #2D6A4F;
+    color: #F5F1E8;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  .scan-cta-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin: 0 0 0.9rem;
+    color: #F5F1E8;
+  }
+
+  .scan-cta-btn {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
+
+  .scan-cta-sub {
+    font-size: 0.8rem;
+    color: rgba(245,241,232,0.7);
+    margin: 0;
+  }
+</style>

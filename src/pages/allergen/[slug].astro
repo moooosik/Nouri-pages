@@ -2,6 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import allergens from '../../data/allergens.json';
 
+export const prerender = true;
+
 export function getStaticPaths() {
   return allergens.map((entry) => ({
     params: { slug: entry.slug },
@@ -19,6 +21,23 @@ const canonical = `https://nouri-scan.vercel.app/allergen/${entry.slug}`;
   canonical={canonical}
   ogType="article"
 >
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": entry.h1,
+    "description": entry.metaDescription,
+    "url": canonical,
+    "datePublished": "2026-05-01",
+    "author": {
+      "@type": "Organization",
+      "name": "Nouri"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nouri",
+      "url": "https://nouri-scan.vercel.app"
+    }
+  })} slot="head" />
   <nav class="topbar" aria-label="Primary">
     <a href="/" class="wordmark">nouri<span class="dot">.</span></a>
     <ul class="topnav">
